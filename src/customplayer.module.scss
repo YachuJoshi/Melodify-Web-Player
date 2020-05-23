@@ -1,0 +1,95 @@
+.real__player {
+  // display: none;
+}
+
+.player__container {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+
+  &__skipback,
+  &__skipfront {
+    font-size: 24px;
+    cursor: pointer;
+    color: #eb568e;
+  }
+
+  &__skipback {
+    margin-right: 6px;
+  }
+
+  &__skipfront {
+    margin-left: 6px;
+  }
+}
+
+.buttonPause,
+.buttonPlay {
+  font-size: 32px;
+  color: #eb568e;
+  margin: 2px;
+  cursor: pointer;
+  text-align: center;
+  border: 2px solid #eb568e;
+  border-radius: 50%;
+  padding-left: 5px;
+  transition: all 0.2s ease-out;
+
+  &:hover {
+    transform: scale(1.12);
+  }
+
+  &:active {
+    transform: scale(1.12) translateY(5px);
+  }
+}
+
+.buttonPause {
+  padding-right: 4px;
+}
+
+.progress {
+  width: 36%;
+  position: relative;
+
+  &__bar {
+    cursor: pointer;
+    display: block;
+    border-radius: 4px;
+    height: 5px;
+    width: 100%;
+    background-color: #cfcfd9;
+    margin: 10px 0;
+  }
+
+  &__filler {
+    position: absolute;
+    display: block;
+    height: 5px;
+    width: 0;
+    top: 10px;
+    z-index: 10;
+    background-color: #eb568e;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &__box {
+    position: absolute;
+    display: block;
+    height: 18px;
+    width: 18px;
+    top: 3.2px;
+    border: 2px solid #eb568e;
+    border-radius: 50%;
+    z-index: 20;
+    background-color: #eb568e;
+    transform: translateX(-8.5px);
+  }
+}
