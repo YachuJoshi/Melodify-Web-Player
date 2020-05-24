@@ -22,12 +22,25 @@ const CustomPlayer = ({
 }) => {
 
   let volumeElem = volume < 0.5 ?
-    (<MdVolumeDown
+    <MdVolumeDown
       className={styles.controls__volume}
-    />) :
-    (<MdVolumeUp
+    /> :
+    <MdVolumeUp
       className={styles.controls__volume}
-    />);
+    />;
+
+  let pausePlayElem = isPlaying ?
+    <IoMdPause
+      onClick={() => {
+        pauseAudio();
+      }}
+      className={styles.buttonPause}
+    />
+    :
+    <IoMdPlay
+      onClick={() => playAudio()}
+      className={styles.buttonPlay}
+    />
 
   return (
     <>
@@ -72,19 +85,7 @@ const CustomPlayer = ({
               onClick={() => seekBack(5)}
               className={styles.controls__seekback}
             />
-            {isPlaying ?
-              <IoMdPause
-                onClick={() => {
-                  pauseAudio();
-                }}
-                className={styles.buttonPause}
-              />
-              :
-              <IoMdPlay
-                onClick={() => playAudio()}
-                className={styles.buttonPlay}
-              />
-            }
+            {pausePlayElem}
             <AiOutlineForward
               onClick={() => seekForward(5)}
               className={styles.controls__seekforward}

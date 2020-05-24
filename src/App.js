@@ -32,21 +32,21 @@ function App() {
   }, [songsList, currentIndex]);
 
   const handleMusicShuffle = (status) => {
-    if (status === 'NEXT') {
-      setCurrentIndex(index => {
-        if (index >= songsList.length) {
-          return songsList.length;
-        }
-        return index + 1;
-      });
-    }
-
     if (status === 'PREVIOUS') {
       setCurrentIndex(index => {
         if (index <= 0) {
           return 0;
         }
         return index - 1;
+      });
+    }
+
+    if (status === 'NEXT') {
+      setCurrentIndex(index => {
+        if (index >= songsList.length) {
+          return songsList.length;
+        }
+        return index + 1;
       });
     }
   }

@@ -34,12 +34,12 @@ const Player = ({ handleMusicShuffle, src }) => {
   const handlePlay = useCallback(() => {
     setIsPlaying(true);
     playerEl.current.audio.current.play();
-  }, [setIsPlaying]);
+  }, []);
 
   const handlePause = useCallback(() => {
     setIsPlaying(false);
     playerEl.current.audio.current.pause();
-  }, [setIsPlaying]);
+  }, []);
 
   const handleSeek = (event) => {
     const element = document.querySelector('#progressIndicator');
@@ -126,7 +126,7 @@ const Player = ({ handleMusicShuffle, src }) => {
   return (
     <>
       <AudioPlayer
-        autoPlay
+        autoPlay={true}
         showSkipControls={true}
         src={src}
         className={styles.real__player}
