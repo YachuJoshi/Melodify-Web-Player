@@ -6,11 +6,11 @@ import styles from './customplayer.module.scss';
 
 import { CustomPlayer } from './CustomPlayer';
 
-const Player = ({ title, isPlaying, currentlyPlaying, setIsPlaying, src }) => {
+const Player = ({ handleMusicShuffle, src }) => {
+  const [isPlaying, setIsPlaying] = useState(true);
   const [fraction, setFraction] = useState(0);
+  const [volume, setVolume] = useState(1);
   const playerEl = useRef();
-
-  const handleChange = () => console.log(playerEl.current.handleClickVolumeButton);
 
   useEffect(() => {
     let playerInterval = setInterval(() => {
@@ -52,28 +52,51 @@ const Player = ({ title, isPlaying, currentlyPlaying, setIsPlaying, src }) => {
     }
   }
 
-  // useEffect(() => {
-  //   const handler = (event, callback) => {
-  //     if (event.keyCode === 32) {
-  //       callback();
-  //     }
-  //   }
+  useEffect(() => {
+    const togglePausePlay = (event) => {
+      if (event.keyCode === 32) {
+        if (isPlaying) {
+          handlePause();
+          return;
+        }
 
-  //   if (title === currentlyPlaying) {
-  //     if (isPlaying) {
-  //       window.addEventListener('keydown', (event) => handler(event, handlePause));
-  //     }
-  //     if (!isPlaying) {
-  //       window.addEventListener('keydown', (event) => handler(event, handlePlay));
-  //     }
-  //   }
+        if (!isPlaying) {
+          handlePlay();
+          return;
+        }
+      }
+      return;
+    }
+    window.addEventListener('keydown', togglePausePlay);
+    return () => window.removeEventListener('keydown', togglePausePlay);
+  }, [handlePause, handlePlay, isPlaying]);
 
-  //   return () => {
-  //     window.removeEventListener('keydown', (event) => handler(event, handlePlay));
-  //     window.removeEventListener('keydown', (event) => handler(event, handlePause));
-  //   }
+  const seekBack = (sec) => {
+    if (playerEl.current.audio.current.currentTime <= 4) {
+      playerEl.current.audio.current.currentTime = 0;
+      setFraction(0);
+      return;
+    };
+    playerEl.current.audio.current.currentTime -= sec;
+    setFraction((playerEl.current.audio.current.currentTime / playerEl.current.audio.current.duration) * 100);
+  }
 
-  // }, [currentlyPlaying, handlePause, handlePlay, isPlaying, title]);
+  const seekForward = (sec) => {
+    if (playerEl.current.audio.current.currentTime >= playerEl.current.audio.current.duration - 4) {
+      playerEl.current.audio.current.currentTime = playerEl.current.audio.current.duration;
+      setFraction(1);
+      return;
+    }
+    playerEl.current.audio.current.currentTime += sec;
+    setFraction((playerEl.current.audio.current.currentTime / playerEl.current.audio.current.duration) * 100);
+  }
+
+  const handleVolumeSeek = (event) => {
+    const element = document.querySelector('#volumeIndicator');
+    const maxX = element.clientWidth;
+    playerEl.current.audio.current.volume = (event.nativeEvent.offsetX / maxX);
+    setVolume(playerEl.current.audio.current.volume);
+  }
 
   const handleStart = (event) => {
     console.log('START');
@@ -81,11 +104,6 @@ const Player = ({ title, isPlaying, currentlyPlaying, setIsPlaying, src }) => {
 
   const handleDragOver = (event) => {
     event.preventDefault();
-    // const element = document.querySelector('#progressIndicator');
-    // const maxX = element.clientWidth;
-    // if (event.nativeEvent.offsetX < 0) return;
-    // setFraction((event.nativeEvent.offsetX / maxX) * 100);
-    // playerEl.current.audio.current.currentTime = (event.nativeEvent.offsetX / maxX) * playerEl.current.audio.current.duration;
     console.log(playerEl.current.audio.current.currentTime, 1234);
     console.log('DRAGGING');
   }
@@ -108,7 +126,7 @@ const Player = ({ title, isPlaying, currentlyPlaying, setIsPlaying, src }) => {
   return (
     <>
       <AudioPlayer
-        autoPlay={false}
+        autoPlay
         showSkipControls={true}
         src={src}
         className={styles.real__player}
@@ -117,16 +135,30 @@ const Player = ({ title, isPlaying, currentlyPlaying, setIsPlaying, src }) => {
       <CustomPlayer
         isPlaying={isPlaying}
         fraction={fraction}
+        volume={volume}
         playAudio={handlePlay}
         pauseAudio={handlePause}
         handleSeek={handleSeek}
+        seekBack={seekBack}
+        seekForward={seekForward}
+        handleMusicShuffle={handleMusicShuffle}
+        handleVolumeSeek={handleVolumeSeek}
         handleStart={handleStart}
         handleDragOver={handleDragOver}
         handleEnd={handleEnd}
       />
-      <button onClick={handleChange}>FOCUS</button>
     </>
   );
 };
 
 export { Player };
+
+  // const handleChange = () => console.log(playerEl.current.audio.current.volume);
+  // <button onClick={handleChange}>FOCUS</button>
+
+  //handleDragOver()
+    // const element = document.querySelector('#progressIndicator');
+    // const maxX = element.clientWidth;
+    // if (event.nativeEvent.offsetX < 0) return;
+    // setFraction((event.nativeEvent.offsetX / maxX) * 100);
+    // playerEl.current.audio.current.currentTime = (event.nativeEvent.offsetX / maxX) * playerEl.current.audio.current.duration;

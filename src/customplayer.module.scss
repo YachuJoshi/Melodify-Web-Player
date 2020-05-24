@@ -1,5 +1,8 @@
+$color-primary: #111;
+$color-secondary: #3c3c3c;
+
 .real__player {
-  // display: none;
+  display: none;
 }
 
 .player__container {
@@ -10,33 +13,77 @@
 }
 
 .controls {
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
 
   &__skipback,
-  &__skipfront {
-    font-size: 24px;
+  &__skipforward,
+  &__shuffle,
+  &__volume,
+  &__seekback,
+  &__seekforward {
+    font-size: 28px;
     cursor: pointer;
-    color: #eb568e;
+    color: $color-primary;
+    transition: all 0.2s ease-out;
+
+    &:hover {
+      transform: scale(1.12);
+    }
+
+    &:active {
+      transform: scale(1.12) translateY(2px);
+    }
+  }
+
+  &__seekback,
+  &__seekforward {
+    font-size: 32px;
+  }
+
+  &__seekback {
+    margin-right: 8px;
+  }
+
+  &__seekforward {
+    margin-left: 8px;
+  }
+
+  &__shuffle {
+    margin-top: -30px;
+    margin-left: 20px;
   }
 
   &__skipback {
-    margin-right: 6px;
+    margin-right: 5px;
   }
 
   &__skipfront {
-    margin-left: 6px;
+    margin-left: 5px;
   }
+
+  &__volume {
+    font-size: 30px;
+  }
+}
+
+.music__controller {
+  display: flex;
+  align-items: center;
+  margin-left: 92px;
 }
 
 .buttonPause,
 .buttonPlay {
   font-size: 32px;
-  color: #eb568e;
+  color: $color-primary;
   margin: 2px;
   cursor: pointer;
   text-align: center;
-  border: 2px solid #eb568e;
+  border: 2px solid $color-primary;
   border-radius: 50%;
   padding-left: 5px;
   transition: all 0.2s ease-out;
@@ -55,6 +102,7 @@
 }
 
 .progress {
+  margin-top: 10px;
   width: 36%;
   position: relative;
 
@@ -64,7 +112,7 @@
     border-radius: 4px;
     height: 5px;
     width: 100%;
-    background-color: #cfcfd9;
+    background-color: $color-secondary;
     margin: 10px 0;
   }
 
@@ -75,21 +123,67 @@
     width: 0;
     top: 10px;
     z-index: 10;
-    background-color: #eb568e;
+    background-color: $color-primary;
     border-radius: 4px;
     cursor: pointer;
   }
 
-  &__box {
+  &__circle {
     position: absolute;
     display: block;
     height: 18px;
     width: 18px;
     top: 3.2px;
-    border: 2px solid #eb568e;
+    border: 2px solid $color-primary;
     border-radius: 50%;
     z-index: 20;
-    background-color: #eb568e;
+    background-color: $color-primary;
+    transform: translateX(-8.5px);
+  }
+}
+
+.volume {
+  margin: 0 20px;
+  margin-top: -30px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 6%;
+  position: relative;
+
+  &__bar {
+    cursor: pointer;
+    display: block;
+    border-radius: 4px;
+    height: 5px;
+    width: 100%;
+    background-color: $color-secondary;
+    margin: 10px 0;
+  }
+
+  &__filler {
+    position: absolute;
+    display: block;
+    height: 5px;
+    width: 0;
+    top: 40px;
+    left: 0;
+    z-index: 10;
+    background-color: $color-primary;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &__circle {
+    position: absolute;
+    display: block;
+    height: 12.8px;
+    width: 12.8px;
+    top: 36px;
+    border: 2px solid $color-primary;
+    border-radius: 50%;
+    z-index: 20;
+    background-color: $color-primary;
     transform: translateX(-8.5px);
   }
 }
