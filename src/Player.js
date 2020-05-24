@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import AudioPlayer from "react-h5-audio-player";
-import 'react-h5-audio-player/src/styles.scss';
 
 import styles from './customplayer.module.scss';
 
@@ -15,8 +13,8 @@ const Player = ({ handleMusicShuffle, src }) => {
   useEffect(() => {
     let playerInterval = setInterval(() => {
       if (playerEl.current === null) return;
-      let currentTime = playerEl.current.audio.current.currentTime;
-      let totalDuration = playerEl.current.audio.current.duration;
+      let currentTime = playerEl.current.currentTime;
+      let totalDuration = playerEl.current.duration;
       setFraction((currentTime / totalDuration) * 100);
       if (currentTime === totalDuration) {
         setIsPlaying(false);
@@ -33,19 +31,19 @@ const Player = ({ handleMusicShuffle, src }) => {
 
   const handlePlay = useCallback(() => {
     setIsPlaying(true);
-    playerEl.current.audio.current.play();
+    playerEl.current.play();
   }, []);
 
   const handlePause = useCallback(() => {
     setIsPlaying(false);
-    playerEl.current.audio.current.pause();
+    playerEl.current.pause();
   }, []);
 
   const handleSeek = (event) => {
     const element = document.querySelector('#progressIndicator');
     const maxX = element.clientWidth;
     setFraction((event.nativeEvent.offsetX / maxX) * 100);
-    playerEl.current.audio.current.currentTime = (event.nativeEvent.offsetX / maxX) * playerEl.current.audio.current.duration;
+    playerEl.current.currentTime = (event.nativeEvent.offsetX / maxX) * playerEl.current.duration;
 
     if (!isPlaying) {
       handlePlay();
@@ -72,30 +70,30 @@ const Player = ({ handleMusicShuffle, src }) => {
   }, [handlePause, handlePlay, isPlaying]);
 
   const seekBack = (sec) => {
-    if (playerEl.current.audio.current.currentTime <= 4) {
-      playerEl.current.audio.current.currentTime = 0;
+    if (playerEl.current.currentTime <= 4) {
+      playerEl.current.currentTime = 0;
       setFraction(0);
       return;
     };
-    playerEl.current.audio.current.currentTime -= sec;
-    setFraction((playerEl.current.audio.current.currentTime / playerEl.current.audio.current.duration) * 100);
+    playerEl.current.currentTime -= sec;
+    setFraction((playerEl.current.currentTime / playerEl.current.duration) * 100);
   }
 
   const seekForward = (sec) => {
-    if (playerEl.current.audio.current.currentTime >= playerEl.current.audio.current.duration - 4) {
-      playerEl.current.audio.current.currentTime = playerEl.current.audio.current.duration;
+    if (playerEl.current.currentTime >= playerEl.current.duration - 4) {
+      playerEl.current.currentTime = playerEl.current.duration;
       setFraction(1);
       return;
     }
-    playerEl.current.audio.current.currentTime += sec;
-    setFraction((playerEl.current.audio.current.currentTime / playerEl.current.audio.current.duration) * 100);
+    playerEl.current.currentTime += sec;
+    setFraction((playerEl.current.currentTime / playerEl.current.duration) * 100);
   }
 
   const handleVolumeSeek = (event) => {
     const element = document.querySelector('#volumeIndicator');
     const maxX = element.clientWidth;
-    playerEl.current.audio.current.volume = (event.nativeEvent.offsetX / maxX);
-    setVolume(playerEl.current.audio.current.volume);
+    playerEl.current.volume = (event.nativeEvent.offsetX / maxX);
+    setVolume(playerEl.current.volume);
   }
 
   const handleStart = (event) => {
@@ -104,7 +102,7 @@ const Player = ({ handleMusicShuffle, src }) => {
 
   const handleDragOver = (event) => {
     event.preventDefault();
-    console.log(playerEl.current.audio.current.currentTime, 1234);
+    console.log(playerEl.current.currentTime, 1234);
     console.log('DRAGGING');
   }
 
@@ -113,21 +111,20 @@ const Player = ({ handleMusicShuffle, src }) => {
     const maxX = element.clientWidth;
     if (event.nativeEvent.offsetX <= 0) {
       setFraction(0);
-      playerEl.current.audio.current.currentTime = 0;
+      playerEl.current.currentTime = 0;
       return;
     }
 
     setFraction((event.nativeEvent.offsetX / maxX) * 100);
-    playerEl.current.audio.current.currentTime = (event.nativeEvent.offsetX / maxX) * playerEl.current.audio.current.duration;
-    console.log(playerEl.current.audio.current.currentTime);
+    playerEl.current.currentTime = (event.nativeEvent.offsetX / maxX) * playerEl.current.duration;
+    console.log(playerEl.current.currentTime);
     console.log('DONE');
   }
 
   return (
     <>
-      <AudioPlayer
-        autoPlay={true}
-        showSkipControls={true}
+      <audio
+        autoPlay
         src={src}
         className={styles.real__player}
         ref={playerEl}
@@ -153,12 +150,10 @@ const Player = ({ handleMusicShuffle, src }) => {
 
 export { Player };
 
-  // const handleChange = () => console.log(playerEl.current.audio.current.volume);
-  // <button onClick={handleChange}>FOCUS</button>
 
   //handleDragOver()
     // const element = document.querySelector('#progressIndicator');
     // const maxX = element.clientWidth;
     // if (event.nativeEvent.offsetX < 0) return;
     // setFraction((event.nativeEvent.offsetX / maxX) * 100);
-    // playerEl.current.audio.current.currentTime = (event.nativeEvent.offsetX / maxX) * playerEl.current.audio.current.duration;
+    // playerEl.current.currentTime = (event.nativeEvent.offsetX / maxX) * playerEl.current.duration;
