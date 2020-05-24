@@ -58,6 +58,7 @@ function App() {
   return (
     <div className="App">
       {loading && <span>Loading... <span role="img" aria-label="Haha">🥳</span> </span>}
+      {error && <span>Oops.. Something Went Wrong...</span>}
       <div className="songs-collection">
         {songsList.map((song, index) => (
           <div
@@ -80,7 +81,6 @@ function App() {
           />
         </div>
       ))}
-      {error && <span>Oops.. Something went wrong...</span>}
     </div>
   );
 }
